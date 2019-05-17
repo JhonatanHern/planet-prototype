@@ -23,55 +23,46 @@ use hdk::holochain_core_types::{
 
 // see https://developer.holochain.org/api/0.0.15-alpha1/hdk/ for info on using the hdk library
 
-
-#[derive(Serialize, Deserialize, Debug, DefaultJson,Clone)]
-pub struct Message {
-    content: String,
-}
-
-pub fn handle_send_message( entry : Message , destiny : Address ) -> ZomeApiResult<Address> {
-    let entry = Entry::App("message".into(), entry.into());
-    let address = hdk::commit_entry(&entry)?;
-    Ok(address)
-}
-
-pub fn handle_get_my_entry(address: Address) -> ZomeApiResult<Option<Entry>> {
-    hdk::get_entry(&address)
-}
-
-fn definition() -> ValidatingEntryType {
-    entry!(
-        name: "message",
-        description: "message entry",
-        sharing: Sharing::Public,
-        validation_package: || {
-            hdk::ValidationPackageDefinition::Entry
-        },
-        validation: | _validation_data: hdk::EntryValidationData<Message>| {
-            Ok(())
-        }
-    )
-}
+mod user;
+mod message;
+mod channel;
 
 define_zome! {
     entries: [
-       definition()
+       user::definition(),
+       channel::definition(),
+       message::definition()
     ]
-    genesis: || { Ok(()) }
+    genesis: || {
+        Ok(())
+    }
     functions: [
         send_message: {
-            inputs: |entry: Message, destiny : Address|,
+            inputs: | entry: message::Message , destiny : Address|,
             outputs: |result: ZomeApiResult<Address>|,
-            handler: handle_send_message
+            handler: message::handle_send_message
         }
-        // get_my_entry: {
-        //     inputs: |address: Address|,
-        //     outputs: |result: ZomeApiResult<Option<Entry>>|,
-        //     handler: handle_get_my_entry
-        // }
+        create_channel: {
+            inputs: | entry : channel::Channel |,
+            outputs: |result: ZomeApiResult<Address>|,
+            handler: channel::handle_create_channel
+        }
+        create_user: {
+            inputs: | username : String |,
+            outputs: |result: ZomeApiResult<Address>|,
+            handler: user::handle_create_user
+        }
+        reee: {
+            inputs: | s : String |,
+            outputs: |result: ZomeApiResult<String>|,
+            handler: ree
+        }
     ]
-
     traits: {
-        hc_public [send_message]
+        hc_public [send_message,create_channel,create_user,reee]
     }
+}
+
+fn ree(s:String) -> ZomeApiResult<String>{
+    Ok(s)
 }

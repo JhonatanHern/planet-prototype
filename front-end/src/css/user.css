@@ -1,0 +1,20 @@
+.user {
+    color: #fff;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 15px;
+}
+
+.user .text {
+    width: 130px;
+}
+
+.user .circle {
+    background-color: #fff;
+    width: 45px;
+    height: 45px;
+    border-radius: 100px;
+    margin-right: 10px;
+}

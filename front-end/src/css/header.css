@@ -1,0 +1,29 @@
+header {
+    /* background-color: rgb(199, 231, 231); */
+    display: flex;
+    justify-content: space-between;
+    padding: 12px;
+    border-bottom: 2px solid #e0e1e2;
+}
+
+.title {
+    margin: 0px 30px;
+}
+
+.links {
+    display: inline-block;
+    margin: 8px 20px;
+}
+
+.link {
+    text-decoration: none;
+    margin: 10px;
+    font-size: 18px;
+    color: #5d5d5d;
+}
+
+.logo {
+    width: 110px;
+    height: auto;
+    margin-left: 40px;
+}
