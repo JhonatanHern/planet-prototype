@@ -20,17 +20,23 @@ pub struct User {
     username: String,
 }
 
+use crate::global_base;
+use crate::utils;
+
 pub fn handle_create_user( username : String ) -> ZomeApiResult<Address> {
-    let user = User{username};
+    let user = User{
+        username
+    };
     let entry = Entry::App("user".into(), user.into());
     let address = hdk::commit_entry(&entry)?;
+    hdk::link_entries(&global_base::get_base_hash(), &address, "public for all")?;
     Ok(address)
 }
 
 pub fn definition() -> ValidatingEntryType {
     entry!(
         name: "user",
-        description: "message entry",
+        description: "user entry",
         sharing: Sharing::Public,
         validation_package: || {
             hdk::ValidationPackageDefinition::Entry
@@ -40,7 +46,7 @@ pub fn definition() -> ValidatingEntryType {
         },
         links: [
             from!(
-                "%agent_id",
+                "global_base",
                 tag: "public for all",
                 validation_package: || {
                     hdk::ValidationPackageDefinition::Entry
@@ -51,4 +57,7 @@ pub fn definition() -> ValidatingEntryType {
             )
         ]
     )
+}
+pub fn handle_get_all_users() -> ZomeApiResult<utils::GetLinksLoadResult<User>> {
+    utils::get_links_and_load_type(&global_base::get_base_hash(), "public for all")
 }

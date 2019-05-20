@@ -2,6 +2,7 @@
 use hdk::{
     entry_definition::ValidatingEntryType,
     error::ZomeApiResult,
+    DNA_ADDRESS,
 };
 use hdk::holochain_core_types::{
     cas::content::Address,
@@ -12,7 +13,8 @@ use hdk::holochain_core_types::{
     validation::EntryValidationData
 };
 
-// see https://developer.holochain.org/api/0.0.15-alpha1/hdk/ for info on using the hdk library
+use crate::global_base;
+use crate::utils;
 
 
 #[derive(Serialize, Deserialize, Debug, DefaultJson,Clone)]
@@ -24,9 +26,12 @@ pub struct Channel {
 pub fn handle_create_channel( entry : Channel ) -> ZomeApiResult<Address> {
     let entry = Entry::App("channel".into(), entry.into());
     let address = hdk::commit_entry(&entry)?;
+    hdk::link_entries(&global_base::get_base_hash(), &address, "public channels for all")?;
     Ok(address)
 }
-
+pub fn handle_get_all_channels() -> ZomeApiResult<utils::GetLinksLoadResult<Channel>> {
+    utils::get_links_and_load_type(&global_base::get_base_hash(), "public channels for all")
+}
 pub fn definition() -> ValidatingEntryType {
     entry!(
         name: "channel",
@@ -40,8 +45,8 @@ pub fn definition() -> ValidatingEntryType {
         },
         links: [
             from!(
-                "%agent_id",
-                tag: "public for all",
+                "global_base",
+                tag: "public channels for all",
                 validation_package: || {
                     hdk::ValidationPackageDefinition::Entry
                 },

@@ -26,12 +26,15 @@ use hdk::holochain_core_types::{
 mod user;
 mod message;
 mod channel;
+mod global_base;
+mod utils;
 
 define_zome! {
     entries: [
-       user::definition(),
-       channel::definition(),
-       message::definition()
+        global_base::definition(),
+        user::definition(),
+        channel::definition(),
+        message::definition()
     ]
     genesis: || {
         Ok(())
@@ -52,6 +55,16 @@ define_zome! {
             outputs: |result: ZomeApiResult<Address>|,
             handler: user::handle_create_user
         }
+        get_all_users:{
+            inputs: | |,
+            outputs : | result : ZomeApiResult<utils::GetLinksLoadResult<user::User>> |,
+            handler : user::handle_get_all_users
+        }
+        get_all_channels:{
+            inputs: | |,
+            outputs : | result : ZomeApiResult<utils::GetLinksLoadResult<channel::Channel>> |,
+            handler : channel::handle_get_all_channels
+        }
         reee: {
             inputs: | s : String |,
             outputs: |result: ZomeApiResult<String>|,
@@ -59,7 +72,7 @@ define_zome! {
         }
     ]
     traits: {
-        hc_public [send_message,create_channel,create_user,reee]
+        hc_public [send_message,create_channel,create_user,reee,get_all_users,get_all_channels]
     }
 }
 
