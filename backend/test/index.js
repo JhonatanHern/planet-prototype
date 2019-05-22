@@ -18,7 +18,7 @@ scenario.runTape("Can create an user", async (t, { alice }) => {
   t.deepEqual({Ok:'QmTCKLfVeMcdeSKHm8Jfc5sGa81VVeKtzgi5AT72XEeYx1'},addr)
 })
 scenario.runTape("Does not give false results for profile checking", async (t, { alice }) => {
-  let result = alice.call("messaging", "checkregister",{})
+  let result = alice.call("messaging", "check_register",{})
   t.deepEqual({
     "Ok": {
       "registered": false
@@ -26,13 +26,8 @@ scenario.runTape("Does not give false results for profile checking", async (t, {
   },result)
 })
 scenario.runTape("Can create own user and check it's existence", async (t, { alice }) => {
-  const addr = alice.call("messaging", "create_user", {
-    "username":"JhonatanHern"
-  })
-  t.deepEqual({
-    Ok:'QmTCKLfVeMcdeSKHm8Jfc5sGa81VVeKtzgi5AT72XEeYx1'
-  },addr)
-  let result = alice.call("messaging", "checkregister",{})
+  alice.call("messaging", "create_user", {"username":"JhonatanHern"})
+  const result = alice.call("messaging", "check_register",{})
   t.deepEqual({
     "Ok": {
       "registered": true
