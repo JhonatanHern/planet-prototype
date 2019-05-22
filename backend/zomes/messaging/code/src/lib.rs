@@ -55,6 +55,11 @@ define_zome! {
             outputs: |result: ZomeApiResult<Address>|,
             handler: user::handle_create_user
         }
+        checkregister: {
+            inputs: | |,
+            outputs: |result: ZomeApiResult<serde_json::Value>|,
+            handler: user::handle_check_register
+        }
         get_all_users:{
             inputs: | |,
             outputs : | result : ZomeApiResult<utils::GetLinksLoadResult<user::User>> |,
@@ -72,7 +77,15 @@ define_zome! {
         }
     ]
     traits: {
-        hc_public [send_message,create_channel,create_user,reee,get_all_users,get_all_channels]
+        hc_public [
+            send_message,
+            create_channel,
+            checkregister,
+            create_user,
+            reee,
+            get_all_users,
+            get_all_channels
+        ]
     }
 }
 

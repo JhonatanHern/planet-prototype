@@ -16,8 +16,8 @@ class App extends React.Component {
     }
 
     makeHolochainCall =  (functionName, params, callback) => {
-        connect("ws://localhost:8080").then(({callZome, close}) => {
-            callZome('holo-chat', 'messaging' , functionName )( params ).then((result) => {
+        connect("ws://localhost:8888").then(({callZome, close}) => {
+            callZome(/*'holo-chat'*/'test-instance', 'messaging' , functionName )( params ).then((result) => {
                 callback(JSON.parse(result))
                 close()
             })
