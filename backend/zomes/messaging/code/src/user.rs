@@ -33,6 +33,10 @@ pub fn handle_create_user( username : String ) -> ZomeApiResult<Address> {
     Ok(address)
 }
 
+pub fn handle_get_all_users() -> ZomeApiResult<utils::GetLinksLoadResult<User>> {
+    utils::get_links_and_load_type(&global_base::get_base_hash(), "public for all")
+}
+
 pub fn definition() -> ValidatingEntryType {
     entry!(
         name: "user",
@@ -57,7 +61,4 @@ pub fn definition() -> ValidatingEntryType {
             )
         ]
     )
-}
-pub fn handle_get_all_users() -> ZomeApiResult<utils::GetLinksLoadResult<User>> {
-    utils::get_links_and_load_type(&global_base::get_base_hash(), "public for all")
 }

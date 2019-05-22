@@ -1,0 +1,1 @@
+{"AgentId":{"nick":"Agent 1","pub_sign_key":"HcSCJbpm8CZparb6f5iEKKRv4Te4op93q6ESMRuDtwp9abbzV8zYTF7EKqqw9ei"}}

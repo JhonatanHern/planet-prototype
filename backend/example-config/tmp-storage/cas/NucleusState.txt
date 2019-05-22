@@ -1,0 +1,1 @@
+{"status":{"Initialized":{"public_token":"QmXaF1uE8CxPrBCMdn1seKzgqEDCFAyR8U8EETCeSSn8o1","payload":null}},"pending_validations":{}}

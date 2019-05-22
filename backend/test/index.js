@@ -65,8 +65,8 @@ scenario.runTape("Can retrieve channels", async (t, { alice }) => {
     "title":"Horsin' Around",
     "description":`The show, which is set in Omro, Wisconsin, portrays a young bachelor horse-simply called The Horse, who is forced to reevaluate his priorities when he agrees to raise three human children.`
   })
-  let addr =  alice.call("messaging", "get_all_channels", {})
-  console.log('addr', JSON.stringify(addr,null,2))
+  let result =  alice.call("messaging", "get_all_channels", {})
+  console.log('result: ', JSON.stringify(result,null,2))
   t.deepEqual({
     "Ok":[
       {
@@ -82,5 +82,5 @@ scenario.runTape("Can retrieve channels", async (t, { alice }) => {
         }
       }
     ]
-  },addr)
+  },result)
 })
