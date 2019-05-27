@@ -19,7 +19,8 @@ use serde_json::json;
 
 #[derive(Serialize, Deserialize, Debug, DefaultJson,Clone)]
 pub struct User {
-    username: String,
+    username : String,
+    address : String
 }
 
 use crate::global_base;
@@ -30,7 +31,8 @@ pub fn handle_create_user( username : String ) -> ZomeApiResult<Address> {
         return Err(ZomeApiError::Internal(String::from("Already registered")));
     }
     let user = User{
-        username
+        username,
+        address : hdk::AGENT_ADDRESS.to_string()
     };
     let entry = Entry::App("user".into(), user.into());
     let address = hdk::commit_entry(&entry)?;
@@ -53,8 +55,10 @@ fn check_register() -> bool {
 pub fn handle_check_register() ->  ZomeApiResult<serde_json::Value>{
     Ok(
         if check_register() {
+            let addr = &hdk::get_links(&hdk::AGENT_ADDRESS, "personal_link").unwrap().addresses()[0];
             json!({
-                "registered" : true
+                "registered" : true,
+                "me" : &hdk::get_entry(&addr.to_owned()).unwrap().unwrap()
             })
         } else {
             json!({

@@ -6,7 +6,7 @@ const NewGroup = _ => (
             <div className="circle">
                 <span>+</span>
             </div>
-            <span>Create New Group</span>
+            <span>New Channel</span>
         </div>
     </div>
 );

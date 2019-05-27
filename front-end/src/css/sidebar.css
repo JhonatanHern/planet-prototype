@@ -40,20 +40,53 @@
     cursor: pointer;
 }
 
-.sidebar .users {
+.sidebar .chats {
     /* background-color: aqua; */
     display: flex;
     justify-content: center;
     flex-wrap: wrap;
     align-items: center;
 }
+.sidebar .chats > * {
+    display: block;
+    width: 100%;
+}
 
 .divider {
     color: #fff;
     text-align: center;
     /* background-color: #ccc; */
-    width: 50%;
     padding: 10px 40px;
     font-size: 20px;
-    border-top: 1px solid #ccc;
+    position: relative;
+    margin-top: .5em;
+}
+.divider::before {
+    height: 1px;
+    width: 60%;
+    background-color: #fff;
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+}
+.reloader{
+    width: 50%;
+    margin-left: 25%;
+    font-size: 1em;
+    background-color: #fff;
+    border: none;
+    border-radius: .5em;
+    cursor: pointer;
+    outline: none;
+    margin-top: .5em;
+}
+.join{
+    text-align: center;
+    cursor: pointer;
+    margin-top: .5em;
+}
+.join:hover{
+    text-decoration: underline;
 }

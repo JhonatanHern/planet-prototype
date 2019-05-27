@@ -1,48 +1,42 @@
 import React from "react"
-import { connect } from '@holochain/hc-web-client'
 
 import Header from "./components/Header"
 import Sidebar from "./components/Sidebar"
 
-import "./css/profile_popup.css"
+import hc from './hc'
 
-const is_the_connection_a_test = true
+import "./css/profile_popup.css"
 
 class App extends React.Component {
     constructor(props){
         super(props)
-        window.hc = this.makeHolochainCall
-        this.makeHolochainCall({
+        hc({
             functionName:'check_register',
             callback: data=>{
                 if (data && data.Ok && data.Ok.registered) {
+                    let me = JSON.parse(data.Ok.me.App[1])
                     this.setState({logged:true})
                 }
             }
         })
     }
     state = {
-        hc : connect,
         logged : false,
         username : null
     }
-
-    makeHolochainCall =  ({ functionName , params = {} , callback = _ => {} }) => {
-        connect("ws://localhost:8888").then(({callZome, close}) => {
-            callZome(is_the_connection_a_test?'test-instance':'holo-chat','messaging' , functionName )( params ).then((result) => {
-                callback(JSON.parse(result))
-                close()
-            })
-        })
-    }
     handleUsernameChange = e => {
-        this.setState({username:e.target.value})
+        this.setState({
+            username: e.target.value
+        })
+        if ( e.keyCode === 13 ){
+            this.join(e.target.value)
+        }
     }
-    join = _ => {
-        this.makeHolochainCall({
+    join = username => {
+        hc({
             functionName: 'create_user',
             params: {
-                username: this.state.username
+                username: username
             },
             callback: (result) =>{
                 if(result.Ok){
@@ -59,8 +53,8 @@ class App extends React.Component {
             return (
                 <div className='register-section'>
                     <h3>Welcome to Planet Chat!</h3>
-                    <input onChange={this.handleUsernameChange} placeholder="Insert your username"/>
-                    <button onClick={this.join}>Join</button>
+                    <input onKeyDown={this.handleUsernameChange} placeholder="Insert your username"/>
+                    <button onClick={e=>this.join(this.state.username)}>Join</button>
                 </div>
             )
         }
