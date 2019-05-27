@@ -2,14 +2,10 @@ header {
     /* background-color: rgb(199, 231, 231); */
     display: flex;
     justify-content: space-between;
-    padding: 12px;
-    border-bottom: 2px solid #e0e1e2;
+    align-items: center;
+    padding: .5em;
+    height: 4em;
 }
-
-.title {
-    margin: 0px 30px;
-}
-
 .links {
     display: inline-block;
     margin: 8px 20px;
@@ -23,7 +19,6 @@ header {
 }
 
 .logo {
-    width: 110px;
-    height: auto;
+    height: 3em;
     margin-left: 40px;
 }

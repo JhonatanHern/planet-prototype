@@ -41,7 +41,7 @@ define_zome! {
     }
     functions: [
         send_message: {
-            inputs: | entry: message::Message , destiny : Address|,
+            inputs: | entry: message::Message , channel_address : Address|,
             outputs: |result: ZomeApiResult<Address>|,
             handler: message::handle_send_message
         }

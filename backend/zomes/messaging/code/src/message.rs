@@ -20,7 +20,7 @@ pub struct Message {
     content: String,
 }
 
-pub fn handle_send_message( entry : Message , destiny : Address ) -> ZomeApiResult<Address> {
+pub fn handle_send_message( entry : Message , channel_address : Address ) -> ZomeApiResult<Address> {
     let entry = Entry::App("message".into(), entry.into());
     let address = hdk::commit_entry(&entry)?;
     Ok(address)
@@ -40,7 +40,7 @@ pub fn definition() -> ValidatingEntryType {
         links: [
             from!(
                 "channel",
-                tag: "belongs_to",
+                tag: "has_message",
                 validation_package: || {
                     hdk::ValidationPackageDefinition::Entry
                 },

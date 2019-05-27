@@ -7,7 +7,7 @@ export default class Header extends Component {
                 <div>
                     <img
                         alt="Planet"
-                        src={require("../img/Proposal of graphic identidy planet-09.png")}
+                        src='/img/Proposal of graphic identidy planet-09.png'
                         className="logo"
                     />
                 </div>
