@@ -10,9 +10,9 @@ import "../css/user.css"
 import actions from '../actions'
 import hc from "../hc";
 
-const Label = ({name}) => (
-    <div className="user">
-        <div className="circle">{name[0].toUpperCase()}</div>
+const Label = ({name,title,onClick}) => (
+    <div className="user" onClick={onClick}>
+        <div className="circle">{name && name[0].toUpperCase()}</div>
         <span className="text">{name}</span>
     </div>
 )
@@ -22,11 +22,27 @@ class Sidebar extends Component {
         super(props)
         this.updateAll()
     }
+    updateMyChannels = () => {
+        hc({
+            functionName : 'get_my_channels',
+            callback : data => {
+                this.props.loadMyChannels(data.Ok)
+            }
+        })
+    }
     updateChannels = () => {
         hc({
             functionName : 'get_all_channels',
             callback : data => {
                 this.props.loadChannels(data.Ok)
+            }
+        })
+    }
+    updateConversations = () => {
+        hc({
+            functionName : 'get_my_conversations',
+            callback : data => {
+                this.props.loadConversations(data.Ok)
             }
         })
     }
@@ -39,31 +55,55 @@ class Sidebar extends Component {
         })
     }
     updateAll = () => {
-        this.updateChannels()
-        this.updateUsers()
+        this.updateMyChannels()
+        //this.updateConversations()
     }
-    clickUser = e =>{}
-    clickChannel = e =>{}
+    clickUser = e => {}
+    clickChannel = channel => {
+        this.props.loadCurrentChannel(channel)
+    }
+    createChannel = () => {
+        let name = prompt('insert the name of the channel')
+        if ( !name ) {
+            return
+        }
+        hc({
+            functionName : 'create_channel',
+            params : {
+                entry:{
+                    title : name,
+                    description : 'default description',
+                }
+            },
+            callback : res => {
+                console.log(res)
+                setTimeout(()=>{
+                    this.updateMyChannels()
+                },300)
+                this.updateMyChannels()
+            }
+        })
+    }
     render() {
         return (
             <div className="sidebar">
-                <NewGroup/>
+                <NewGroup onClick={this.createChannel}/>
                 <button className='reloader' onClick={this.updateAll}>
                     <span role="img" aria-label=''>🔄</span> Update
                 </button>
                 <div className="chats">
                     <div className="divider">My Channels</div>
                     {
-                        this.props.channels &&
-                        this.props.channels.length > 0 &&
-                        this.props.channels.map((c,i)=><Label key={i} name={c.title} onClick={this.clickChannel} />)
+                        this.props.myChannels &&
+                        this.props.myChannels.length > 0 &&
+                        this.props.myChannels.map((c,i)=><Label key={i} name={c.entry.title} onClick={e=>this.clickChannel(c)} />)
                     }
                     <div className='join'>Join a channel!</div>
                     <div className="divider">Conversations</div>
                     {
-                        this.props.users &&
-                        this.props.users.length > 0 &&
-                        this.props.users.map((u,i)=><Label key={i} name={u.entry.username} onClick={this.clickUser} />)
+                        this.props.conversations &&
+                        this.props.conversations.length > 0 &&
+                        this.props.conversations.map((u,i)=><Label key={i} name={u.entry.username} onClick={this.clickUser} />)
                     }
                     <div className='join'>Start a conversation!</div>
                 </div>
@@ -71,11 +111,14 @@ class Sidebar extends Component {
         );
     }
 }
-const mapStateToProps = ({channels,users}) => ({channels,users})
+const mapStateToProps = ({conversations, myChannels}) => ({conversations,myChannels})
 
 const mapDispatchToProps = dispatch => ({
+    loadMyChannels: data => actions.loadMyChannels(data, dispatch),
     loadChannels: data => actions.loadChannels(data, dispatch),
-    loadUsers: data => actions.loadUsers(data, dispatch)
+    loadConversations: data => actions.loadConversations(data, dispatch),
+    loadUsers: data => actions.loadUsers(data, dispatch),
+    loadCurrentChannel: data => actions.loadCurrentChannel(data, dispatch)
 })
 
 export default connect(

@@ -27,12 +27,12 @@ agent = "test_agent1"
     [instances.logger]
     type = "simple"
     file = "app_spec.log"
-    # [instances.storage]
-    # type = "memory"
-    # path = "tmp-storage-agent1"
     [instances.storage]
-    type = "file"
-    path = "example-config/tmp-storage"
+    type = "memory"
+    path = "tmp-storage-agent1"
+    #[instances.storage]
+    #type = "file"
+    #path = "example-config/tmp-storage"
 
 [[interfaces]]
 id = "websocket_interface"

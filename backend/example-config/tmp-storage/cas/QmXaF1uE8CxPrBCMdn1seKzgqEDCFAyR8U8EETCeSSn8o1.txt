@@ -1,1 +1,0 @@
-{"CapTokenGrant":{"id":"hc_public","assignees":null,"functions":{"messaging":["send_message","create_channel","create_user","reee","get_all_users","get_all_channels"]}}}

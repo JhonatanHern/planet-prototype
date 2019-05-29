@@ -26,6 +26,7 @@ use hdk::holochain_core_types::{
 mod user;
 mod message;
 mod channel;
+mod conversation;
 mod global_base;
 mod utils;
 
@@ -44,6 +45,11 @@ define_zome! {
             inputs: | entry: message::Message , channel_address : Address|,
             outputs: |result: ZomeApiResult<Address>|,
             handler: message::handle_send_message
+        }
+        send_private_message: {
+            inputs: | entry: message::Message , conversation_address : Address|,
+            outputs: |result: ZomeApiResult<Address>|,
+            handler: message::handle_send_private_message
         }
         create_channel: {
             inputs: | entry : channel::Channel |,
@@ -70,6 +76,21 @@ define_zome! {
             outputs : | result : ZomeApiResult<utils::GetLinksLoadResult<channel::Channel>> |,
             handler : channel::handle_get_all_channels
         }
+        get_my_channels:{
+            inputs: | |,
+            outputs : | result : ZomeApiResult<utils::GetLinksLoadResult<channel::Channel>> |,
+            handler : channel::handle_get_my_channels
+        }
+        get_my_conversations:{
+            inputs: | |,
+            outputs : | result : ZomeApiResult<utils::GetLinksLoadResult<conversation::Conversation>> |,
+            handler : conversation::handle_get_my_conversations
+        }
+        create_conversation:{
+            inputs: | buddy: Address |,
+            outputs : | result : ZomeApiResult<Address> |,
+            handler : conversation::handle_create_conversation
+        }
         reee: {
             inputs: | s : String |,
             outputs: |result: ZomeApiResult<String>|,
@@ -79,12 +100,20 @@ define_zome! {
     traits: {
         hc_public [
             send_message,
+            send_private_message,
+            
             create_channel,
+            get_all_channels,
+            get_my_channels,
+
             check_register,
-            create_user,
-            reee,
             get_all_users,
-            get_all_channels
+            create_user,
+
+            get_my_conversations,
+            create_conversation,
+
+            reee
         ]
     }
 }

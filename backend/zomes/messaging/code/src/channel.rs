@@ -27,10 +27,14 @@ pub fn handle_create_channel( entry : Channel ) -> ZomeApiResult<Address> {
     let entry = Entry::App("channel".into(), entry.into());
     let address = hdk::commit_entry(&entry)?;
     hdk::link_entries(&global_base::get_base_hash(), &address, "public channels for all")?;
+    hdk::link_entries(&hdk::AGENT_ADDRESS,&address,"belongs_to")?;
     Ok(address)
 }
 pub fn handle_get_all_channels() -> ZomeApiResult<utils::GetLinksLoadResult<Channel>> {
     utils::get_links_and_load_type(&global_base::get_base_hash(), "public channels for all")
+}
+pub fn handle_get_my_channels() -> ZomeApiResult<utils::GetLinksLoadResult<Channel>> {
+    utils::get_links_and_load_type(&hdk::AGENT_ADDRESS, "belongs_to")
 }
 pub fn definition() -> ValidatingEntryType {
     entry!(
@@ -47,6 +51,16 @@ pub fn definition() -> ValidatingEntryType {
             from!(
                 "global_base",
                 tag: "public channels for all",
+                validation_package: || {
+                    hdk::ValidationPackageDefinition::Entry
+                },
+                validation: |_validation_data: hdk::LinkValidationData| {
+                    Ok(())
+                }
+            ),
+            from!(
+                "%agent_id",
+                tag: "belongs_to",
                 validation_package: || {
                     hdk::ValidationPackageDefinition::Entry
                 },

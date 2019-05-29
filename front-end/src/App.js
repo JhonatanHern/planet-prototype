@@ -1,20 +1,24 @@
 import React from "react"
+import { connect } from 'react-redux'
 
+import actions from './actions'
 import Header from "./components/Header"
 import Sidebar from "./components/Sidebar"
 
 import hc from './hc'
 
 import "./css/profile_popup.css"
+import Chat from "./components/Chat";
 
 class App extends React.Component {
     constructor(props){
         super(props)
         hc({
-            functionName:'check_register',
+            functionName: 'check_register',
             callback: data=>{
                 if (data && data.Ok && data.Ok.registered) {
                     let me = JSON.parse(data.Ok.me.App[1])
+                    this.props.updateProfile(me)
                     this.setState({logged:true})
                 }
             }
@@ -63,10 +67,20 @@ class App extends React.Component {
                 <Header/>
                 <main>
                     <Sidebar />
+                    <Chat />
                 </main>
             </>
         )
     }
 }
 
-export default App;
+const mapStateToProps = () => ({})
+
+const mapDispatchToProps = dispatch => ({
+    updateProfile: data => actions.updateProfile(data, dispatch),
+})
+
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(App)

@@ -17,4 +17,5 @@ main{
     height: calc(100vh - 4em);
     overflow-y: auto;
     position: relative;
+    display: flex;
 }

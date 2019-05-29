@@ -1,7 +1,7 @@
 import React from "react";
 
-const NewGroup = _ => (
-    <div className="newGroup">
+const NewGroup = ({onClick}) => (
+    <div className="newGroup" onClick={onClick}>
         <div className="content">
             <div className="circle">
                 <span>+</span>
