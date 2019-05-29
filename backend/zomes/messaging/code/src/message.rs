@@ -14,6 +14,7 @@ use hdk::holochain_core_types::{
 
 // see https://developer.holochain.org/api/0.0.15-alpha1/hdk/ for info on using the hdk library
 
+use crate::utils;
 
 #[derive(Serialize, Deserialize, Debug, DefaultJson,Clone)]
 pub struct Message {
@@ -21,14 +22,14 @@ pub struct Message {
 }
 #[derive(Serialize, Deserialize, Debug, DefaultJson,Clone)]
 pub struct MessageWithSender {
-    content: Message,
-    author: Address
+    content: String,
+    author: String
 }
 
 pub fn handle_send_message( entry : Message , channel_address : Address ) -> ZomeApiResult<Address> {
     let message = MessageWithSender{
-        content : entry,
-        author : Address::from(hdk::AGENT_ADDRESS.to_string())
+        content : entry.content,
+        author : hdk::AGENT_ADDRESS.to_string()
     };
     let entry = Entry::App("message".into(), message.into());
     let address = hdk::commit_entry(&entry)?;
@@ -37,15 +38,17 @@ pub fn handle_send_message( entry : Message , channel_address : Address ) -> Zom
 }
 pub fn handle_send_private_message( entry : Message , conversation_address : Address ) -> ZomeApiResult<Address> {
     let message = MessageWithSender{
-        content : entry,
-        author : Address::from(hdk::AGENT_ADDRESS.to_string())
+        content : entry.content,
+        author : hdk::AGENT_ADDRESS.to_string()
     };
     let entry = Entry::App("message".into(), message.into());
     let address = hdk::commit_entry(&entry)?;
     hdk::link_entries(&conversation_address,&address,"has_message")?;
     Ok(address)
 }
-
+pub fn handle_get_messages_from_channel( channel : Address ) -> ZomeApiResult<utils::GetLinksLoadResult<MessageWithSender>> {
+    utils::get_links_and_load_type(&channel, "has_message")
+}
 pub fn definition() -> ValidatingEntryType {
     entry!(
         name: "message",

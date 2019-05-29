@@ -51,6 +51,11 @@ define_zome! {
             outputs: |result: ZomeApiResult<Address>|,
             handler: message::handle_send_private_message
         }
+        get_messages_from_channel:{
+            inputs: | channel : Address |,
+            outputs : | result : ZomeApiResult<utils::GetLinksLoadResult<message::MessageWithSender>> |,
+            handler : message::handle_get_messages_from_channel
+        }
         create_channel: {
             inputs: | entry : channel::Channel |,
             outputs: |result: ZomeApiResult<Address>|,
@@ -101,6 +106,7 @@ define_zome! {
         hc_public [
             send_message,
             send_private_message,
+            get_messages_from_channel,
             
             create_channel,
             get_all_channels,

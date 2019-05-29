@@ -45,6 +45,12 @@ function currentChannel(cc = null ,action) {
     }
     return action.channel
 }
+function chat(chat=null,action) {
+    if (action.type !== 'UPDATE_CHAT') {
+        return chat
+    }
+    return action.chat
+}
 export default combineReducers({
     currentChannel,
     conversations,
@@ -52,5 +58,6 @@ export default combineReducers({
     channels,
     messages,
     users,
+    chat,
     me
 })

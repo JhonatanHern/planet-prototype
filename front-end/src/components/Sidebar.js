@@ -61,6 +61,16 @@ class Sidebar extends Component {
     clickUser = e => {}
     clickChannel = channel => {
         this.props.loadCurrentChannel(channel)
+        this.props.loadCurrentChat([])
+        hc({
+            functionName:'get_messages_from_channel',
+            params : {
+                channel : channel.address
+            },
+            callback : res => {
+                this.props.loadCurrentChat(res.Ok)
+            }
+        })
     }
     createChannel = () => {
         let name = prompt('insert the name of the channel')
@@ -118,7 +128,8 @@ const mapDispatchToProps = dispatch => ({
     loadChannels: data => actions.loadChannels(data, dispatch),
     loadConversations: data => actions.loadConversations(data, dispatch),
     loadUsers: data => actions.loadUsers(data, dispatch),
-    loadCurrentChannel: data => actions.loadCurrentChannel(data, dispatch)
+    loadCurrentChannel: data => actions.loadCurrentChannel(data, dispatch),
+    loadCurrentChat: data => actions.loadCurrentChat(data, dispatch)
 })
 
 export default connect(

@@ -16,5 +16,8 @@ export default {
     },
     loadCurrentChannel:(channel={},dispatch)=>{
         dispatch({ type:'UPDATE_CHANNEL' , channel })
+    },
+    loadCurrentChat:(chat=[],dispatch)=>{//array of messages
+        dispatch({ type:'UPDATE_CHAT' , chat })
     }
 }
