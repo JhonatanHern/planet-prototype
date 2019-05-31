@@ -47,7 +47,7 @@ pub fn definition() -> ValidatingEntryType {
         links: [
             to!(
                 "channel",
-                tag: "public channels for all",
+                link_type: "public channels for all",
                 validation_package: || {
                     hdk::ValidationPackageDefinition::Entry
                 },
@@ -57,7 +57,7 @@ pub fn definition() -> ValidatingEntryType {
             ),
             to!(
                 "user",
-                tag: "public for all",
+                link_type: "public for all",
                 validation_package: || {
                     hdk::ValidationPackageDefinition::Entry
                 },

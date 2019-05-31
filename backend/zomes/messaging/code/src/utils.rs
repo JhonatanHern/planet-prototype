@@ -18,11 +18,11 @@ pub type GetLinksLoadResult<T> = Vec<GetLinksLoadElement<T>>;
 
 
 
-pub fn get_links_and_load<S: Into<String>>(
+pub fn get_links_and_load(
     base: &HashString,
-    tag: S
+    tag: String
 ) -> ZomeApiResult<GetLinksLoadResult<Entry>>  {
-	let get_links_result = hdk::get_links(base, tag)?;
+	let get_links_result = hdk::get_links(base, Some(tag),Some("".to_string()))?;
 
 	Ok(get_links_result.addresses()
 	.iter()
@@ -40,11 +40,11 @@ pub fn get_links_and_load<S: Into<String>>(
 }
 
 pub fn get_links_and_load_type<
-	S: Into<String>,
+	// S: Into<String>,
 	R: TryFrom<AppEntryValue>
 >(
     base: &HashString,
-    tag: S
+    tag: String
 ) -> ZomeApiResult<GetLinksLoadResult<R>> {
 	let link_load_results = get_links_and_load(base, tag)?;
 
@@ -73,8 +73,8 @@ pub fn get_links_and_load_type<
 	.collect())
 }
 
-pub fn link_entries_bidir<S: Into<String>>(a: &HashString, b: &HashString, tag_a_b: &str, tag_b_a: S) -> ZomeApiResult<()> {
-    hdk::link_entries(a, b, tag_a_b)?;
-    hdk::link_entries(b, a, tag_b_a)?;
+pub fn link_entries_bidir(a: &HashString, b: &HashString, tag_a_b: &str, tag_b_a: &str) -> ZomeApiResult<()> {
+    hdk::link_entries(a, b, tag_a_b, "")?;
+    hdk::link_entries(b, a, tag_b_a, "")?;
     Ok(())
 }

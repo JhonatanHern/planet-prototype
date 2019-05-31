@@ -33,7 +33,7 @@ pub fn handle_send_message( entry : Message , channel_address : Address ) -> Zom
     };
     let entry = Entry::App("message".into(), message.into());
     let address = hdk::commit_entry(&entry)?;
-    hdk::link_entries(&channel_address,&address,"has_message")?;
+    hdk::link_entries(&channel_address,&address,"has_message","")?;
     Ok(address)
 }
 pub fn handle_send_private_message( entry : Message , conversation_address : Address ) -> ZomeApiResult<Address> {
@@ -43,11 +43,11 @@ pub fn handle_send_private_message( entry : Message , conversation_address : Add
     };
     let entry = Entry::App("message".into(), message.into());
     let address = hdk::commit_entry(&entry)?;
-    hdk::link_entries(&conversation_address,&address,"has_message")?;
+    hdk::link_entries(&conversation_address,&address,"has_message","")?;
     Ok(address)
 }
 pub fn handle_get_messages_from_channel( channel : Address ) -> ZomeApiResult<utils::GetLinksLoadResult<MessageWithSender>> {
-    utils::get_links_and_load_type(&channel, "has_message")
+    utils::get_links_and_load_type(&channel, "has_message".to_string())
 }
 pub fn definition() -> ValidatingEntryType {
     entry!(
@@ -63,7 +63,7 @@ pub fn definition() -> ValidatingEntryType {
         links: [
             from!(
                 "channel",
-                tag: "has_message",
+                link_type: "has_message",
                 validation_package: || {
                     hdk::ValidationPackageDefinition::Entry
                 },
@@ -73,7 +73,7 @@ pub fn definition() -> ValidatingEntryType {
             ),
             from!(
                 "conversation",
-                tag: "has_message",
+                link_type: "has_message",
                 validation_package: || {
                     hdk::ValidationPackageDefinition::Entry
                 },

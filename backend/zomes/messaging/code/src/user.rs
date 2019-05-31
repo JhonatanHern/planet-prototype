@@ -36,15 +36,15 @@ pub fn handle_create_user( username : String ) -> ZomeApiResult<Address> {
     };
     let entry = Entry::App("user".into(), user.into());
     let address = hdk::commit_entry(&entry)?;
-    hdk::api::link_entries(&global_base::get_base_hash(), &address.clone(), "public for all");
-    match hdk::link_entries(&hdk::AGENT_ADDRESS, &address, "personal_link") {
+    hdk::api::link_entries(&global_base::get_base_hash(), &address.clone(), "public for all","")?;
+    match hdk::link_entries(&hdk::AGENT_ADDRESS, &address, "personal_link","") {
         Ok(_)=>Ok(address),
         Err(_) => Err(ZomeApiError::Internal("Entry Linking failed".to_string())),
     }
 }
 
 fn check_register() -> bool {
-    match hdk::get_links(&hdk::AGENT_ADDRESS,  "personal_link") {
+    match hdk::get_links(&hdk::AGENT_ADDRESS,  Some("personal_link".to_string()),Some("".to_string())) {
         Ok(result_vec) => result_vec.addresses().len() != 0,
         Err(error) => {
             false
@@ -55,7 +55,7 @@ fn check_register() -> bool {
 pub fn handle_check_register() ->  ZomeApiResult<serde_json::Value>{
     Ok(
         if check_register() {
-            let addr = &hdk::get_links(&hdk::AGENT_ADDRESS, "personal_link").unwrap().addresses()[0];
+            let addr = &hdk::get_links(&hdk::AGENT_ADDRESS, Some("personal_link".to_string()),Some("".to_string())).unwrap().addresses()[0];
             json!({
                 "registered" : true,
                 "me" : &hdk::get_entry(&addr.to_owned()).unwrap().unwrap()
@@ -69,7 +69,7 @@ pub fn handle_check_register() ->  ZomeApiResult<serde_json::Value>{
 }
 
 pub fn handle_get_all_users() -> ZomeApiResult<utils::GetLinksLoadResult<User>> {
-    utils::get_links_and_load_type(&global_base::get_base_hash(), "public for all")
+    utils::get_links_and_load_type(&global_base::get_base_hash(), "public for all".to_string())
 }
 
 pub fn definition() -> ValidatingEntryType {
@@ -86,7 +86,7 @@ pub fn definition() -> ValidatingEntryType {
         links: [
             from!(
                 "global_base",
-                tag: "public for all",
+                link_type: "public for all",
                 validation_package: || {
                     hdk::ValidationPackageDefinition::Entry
                 },
@@ -96,7 +96,7 @@ pub fn definition() -> ValidatingEntryType {
             ),
             from!(
                 "%agent_id",
-                tag: "personal_link",
+                link_type: "personal_link",
                 validation_package: || {
                     hdk::ValidationPackageDefinition::Entry
                 },

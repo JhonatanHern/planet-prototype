@@ -26,15 +26,15 @@ pub struct Channel {
 pub fn handle_create_channel( entry : Channel ) -> ZomeApiResult<Address> {
     let entry = Entry::App("channel".into(), entry.into());
     let address = hdk::commit_entry(&entry)?;
-    hdk::link_entries(&global_base::get_base_hash(), &address, "public channels for all")?;
-    hdk::link_entries(&hdk::AGENT_ADDRESS,&address,"belongs_to")?;
+    hdk::link_entries(&global_base::get_base_hash(), &address, "public channels for all","")?;
+    hdk::link_entries(&hdk::AGENT_ADDRESS,&address,"belongs_to","")?;
     Ok(address)
 }
 pub fn handle_get_all_channels() -> ZomeApiResult<utils::GetLinksLoadResult<Channel>> {
-    utils::get_links_and_load_type(&global_base::get_base_hash(), "public channels for all")
+    utils::get_links_and_load_type(&global_base::get_base_hash(), "public channels for all".to_string())
 }
 pub fn handle_get_my_channels() -> ZomeApiResult<utils::GetLinksLoadResult<Channel>> {
-    utils::get_links_and_load_type(&hdk::AGENT_ADDRESS, "belongs_to")
+    utils::get_links_and_load_type(&hdk::AGENT_ADDRESS, "belongs_to".to_string())
 }
 pub fn definition() -> ValidatingEntryType {
     entry!(
@@ -50,7 +50,7 @@ pub fn definition() -> ValidatingEntryType {
         links: [
             from!(
                 "global_base",
-                tag: "public channels for all",
+                link_type: "public channels for all",
                 validation_package: || {
                     hdk::ValidationPackageDefinition::Entry
                 },
@@ -60,7 +60,7 @@ pub fn definition() -> ValidatingEntryType {
             ),
             from!(
                 "%agent_id",
-                tag: "belongs_to",
+                link_type: "belongs_to",
                 validation_package: || {
                     hdk::ValidationPackageDefinition::Entry
                 },
@@ -70,7 +70,7 @@ pub fn definition() -> ValidatingEntryType {
             ),
             to!(
                 "message",
-                tag: "has_message",
+                link_type: "has_message",
                 validation_package: || {
                     hdk::ValidationPackageDefinition::Entry
                 },

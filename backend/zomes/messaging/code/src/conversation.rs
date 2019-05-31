@@ -31,12 +31,12 @@ pub fn handle_create_conversation( buddy : Address ) -> ZomeApiResult<Address> {
     };
     let entry = Entry::App("conversation".into(), RawString::from("conversation").into());
     let address = hdk::commit_entry(&entry)?;
-    hdk::link_entries(&buddy, &address, "belongs_to")?;
-    hdk::link_entries(&hdk::AGENT_ADDRESS,&address,"belongs_to")?;
+    hdk::link_entries(&buddy, &address, "belongs_to","")?;
+    hdk::link_entries(&hdk::AGENT_ADDRESS,&address,"belongs_to","")?;
     Ok(address)
 }
 pub fn handle_get_my_conversations() -> ZomeApiResult<utils::GetLinksLoadResult<Conversation>> {
-    utils::get_links_and_load_type(&hdk::AGENT_ADDRESS, "belongs_to")
+    utils::get_links_and_load_type(&hdk::AGENT_ADDRESS, "belongs_to".to_string())
 }
 pub fn definition() -> ValidatingEntryType {
     entry!(
@@ -52,7 +52,7 @@ pub fn definition() -> ValidatingEntryType {
         links: [
             from!(
                 "%agent_id",
-                tag: "belongs_to",
+                link_type: "belongs_to",
                 validation_package: || {
                     hdk::ValidationPackageDefinition::Entry
                 },
@@ -62,7 +62,7 @@ pub fn definition() -> ValidatingEntryType {
             ),
             to!(
                 "message",
-                tag: "has_message",
+                link_type: "has_message",
                 validation_package: || {
                     hdk::ValidationPackageDefinition::Entry
                 },
