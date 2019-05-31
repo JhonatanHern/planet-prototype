@@ -39,9 +39,7 @@ class App extends React.Component {
     join = username => {
         hc({
             functionName: 'create_user',
-            params: {
-                username: username
-            },
+            params: { username },
             callback: (result) =>{
                 if(result.Ok){
                     this.setState({logged:true})

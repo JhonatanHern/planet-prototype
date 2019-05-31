@@ -36,7 +36,7 @@ pub fn handle_create_user( username : String ) -> ZomeApiResult<Address> {
     };
     let entry = Entry::App("user".into(), user.into());
     let address = hdk::commit_entry(&entry)?;
-    hdk::link_entries(&global_base::get_base_hash(), &address, "public for all")?;
+    hdk::api::link_entries(&global_base::get_base_hash(), &address.clone(), "public for all");
     match hdk::link_entries(&hdk::AGENT_ADDRESS, &address, "personal_link") {
         Ok(_)=>Ok(address),
         Err(_) => Err(ZomeApiError::Internal("Entry Linking failed".to_string())),
@@ -48,7 +48,7 @@ fn check_register() -> bool {
         Ok(result_vec) => result_vec.addresses().len() != 0,
         Err(error) => {
             false
-        },
+        }
     }
 }
 

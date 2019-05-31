@@ -5,6 +5,7 @@ header {
     align-items: center;
     padding: .5em;
     height: 4em;
+    border-bottom: 1px solid #ddd;
 }
 .links {
     display: inline-block;

@@ -1,17 +1,11 @@
 # -----------  Agents  -----------
 
-
 [[agents]]
 id = "test_agent1"
 name = "Agent 1"
 public_address = "HcSCJbpm8CZparb6f5iEKKRv4Te4op93q6ESMRuDtwp9abbzV8zYTF7EKqqw9ei"
 keystore_file = "./agent1.keystore"
 
-# [[agents]]
-# id = "AgentID update the agent property in [[instances]]"
-# name = "Your agent name here"
-# public_address = "public addess"
-# keystore_file = "path/to/keystore"
 # -----------  DNA  -----------
 
 
@@ -53,16 +47,16 @@ id = "holo-chat"
 
 # -----------  UI  -----------
 
-# [[ui_bundles]]
-# id = "main"
-# root_dir = "./ui"
-# hash = "Qm000"
-#
-# [[ui_interfaces]]
-# id = "ui-interface"
-# bundle = "main"
-# port = 3001
-# dna_interface = "websocket_interface"
+[[ui_bundles]]
+id = "main"
+root_dir = "./ui"
+hash = "Qm000"
+
+[[ui_interfaces]]
+id = "ui-interface"
+bundle = "main"
+port = 4004
+dna_interface = "websocket_interface"
 
 # -----------  Networking  -----------
 
