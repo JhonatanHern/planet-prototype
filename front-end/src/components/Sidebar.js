@@ -94,6 +94,17 @@ class Sidebar extends Component {
             }
         })
     }
+    displayUsers = () => {
+        hc({
+            functionName : 'get_all_channels',
+            callback : data => {
+                this.props.loadChannels(data.Ok)
+            }
+        })
+    }
+    displayChannels = () => {
+
+    }
     render() {
         return (
             <div className="sidebar">
@@ -108,14 +119,14 @@ class Sidebar extends Component {
                         this.props.myChannels.length > 0 &&
                         this.props.myChannels.map((c,i)=><Label key={i} name={c.entry.title} onClick={e=>this.clickChannel(c)} />)
                     }
-                    <div className='join'>Join a channel!</div>
+                    <div className='join' onClick={this.props.displayChannelsModal}>Join a channel!</div>
                     <div className="divider">Conversations</div>
                     {
                         this.props.conversations &&
                         this.props.conversations.length > 0 &&
                         this.props.conversations.map((u,i)=><Label key={i} name={u.entry.username} onClick={this.clickUser} />)
                     }
-                    <div className='join'>Start a conversation!</div>
+                    <div className='join' onClick={this.props.displayConversationsModal}>Start a conversation!</div>
                 </div>
             </div>
         );
@@ -126,10 +137,14 @@ const mapStateToProps = ({conversations, myChannels}) => ({conversations,myChann
 const mapDispatchToProps = dispatch => ({
     loadMyChannels: data => actions.loadMyChannels(data, dispatch),
     loadChannels: data => actions.loadChannels(data, dispatch),
-    loadConversations: data => actions.loadConversations(data, dispatch),
-    loadUsers: data => actions.loadUsers(data, dispatch),
     loadCurrentChannel: data => actions.loadCurrentChannel(data, dispatch),
-    loadCurrentChat: data => actions.loadCurrentChat(data, dispatch)
+    
+    loadConversations: data => actions.loadConversations(data, dispatch),
+    loadCurrentChat: data => actions.loadCurrentChat(data, dispatch),
+    loadUsers: data => actions.loadUsers(data, dispatch),
+
+    displayConversationsModal: ()=>actions.displayConversationsModal(dispatch),
+    displayChannelsModal: ()=>actions.displayChannelsModal(dispatch),
 })
 
 export default connect(

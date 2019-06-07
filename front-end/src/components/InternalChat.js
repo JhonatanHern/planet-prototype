@@ -5,7 +5,7 @@ import '../css/chat.css'
 import hc from '../hc'
 import actions from '../actions'
 
-class Chat extends React.Component {
+class InternalChat extends React.Component {
     inputRef = React.createRef()
     sendMessage = e => {
         let text = this.inputRef.current.value
@@ -83,4 +83,4 @@ const mapDispatchToProps = dispatch => ({
     loadCurrentChat: data => actions.loadCurrentChat(data, dispatch)
 })
 
-export default connect(mapStateToProps, mapDispatchToProps)(Chat)
+export default connect(mapStateToProps, mapDispatchToProps)(InternalChat)

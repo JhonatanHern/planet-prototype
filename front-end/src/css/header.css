@@ -6,6 +6,7 @@ header {
     padding: .5em;
     height: 4em;
     border-bottom: 1px solid #ddd;
+    position:sticky;
 }
 .links {
     display: inline-block;

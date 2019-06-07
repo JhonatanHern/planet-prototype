@@ -66,3 +66,23 @@ dna_interface = "websocket_interface"
 n3h_persistence_path = "/home/eyss-dev/holochain/n3h-agent1"
 n3h_log_level = "i"
 bootstrap_nodes = []
+
+[logger]
+type = "debug"
+    [[logger.rules.rules]]
+    color = "red"
+    exclude = false
+    pattern = "^err/"
+
+    [[logger.rules.rules]]
+    color = "white"
+    exclude = false
+    pattern = "^debug/dna"
+
+    [[logger.rules.rules]]
+    exclude = true
+    pattern = "^debug/reduce"
+
+    [[logger.rules.rules]]
+    exclude = false
+    pattern = ".*"

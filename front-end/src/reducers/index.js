@@ -51,13 +51,36 @@ function chat(chat=null,action) {
     }
     return action.chat
 }
+function modal(current=null ,action) {
+    switch(action.type){
+        case "DISPLAY_CHANNELS":
+            return 'DISPLAY_CHANNELS'
+        case "DISPLAY_CONVERSATIONS":
+            return 'DISPLAY_CONVERSATIONS'
+        case "CLOSE_MODAL":
+            return null
+        default:
+            return current
+    }    
+}
+function currentApp(current='USE_PROFILE',action) {    
+    switch(action.type){
+        case "USE_CHAT":
+        case "USE_PROFILE":
+            return action.type
+        default:
+            return current
+    }    
+}
 export default combineReducers({
     currentChannel,
     conversations,
     myChannels,
+    currentApp,
     channels,
     messages,
     users,
+    modal,
     chat,
     me
 })

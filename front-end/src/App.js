@@ -1,16 +1,13 @@
-import React from "react"
+import React, { Component } from 'react'
 import { connect } from 'react-redux'
 
-import actions from './actions'
-import Header from "./components/Header"
-import Sidebar from "./components/Sidebar"
-
+import Chat from './Chat'
+import Header from './components/Header'
 import hc from './hc'
+import actions , { consts } from './actions'
+import Profile from './components/Profile'
 
-import "./css/profile_popup.css"
-import Chat from "./components/Chat";
-
-class App extends React.Component {
+class App extends Component {
     constructor(props){
         super(props)
         hc({
@@ -43,6 +40,16 @@ class App extends React.Component {
             callback: (result) =>{
                 if(result.Ok){
                     this.setState({logged:true})
+                    hc({
+                        functionName: 'check_register',
+                        callback: data=>{
+                            if (data && data.Ok && data.Ok.registered) {
+                                let me = JSON.parse(data.Ok.me.App[1])
+                                this.props.updateProfile(me)
+                                this.setState({logged:true})
+                            }
+                        }
+                    })
                 }else{
                     alert('error')
                     console.log(result)
@@ -50,7 +57,7 @@ class App extends React.Component {
             }
         })
     }
-    render(){
+    render() {
         if(!this.state.logged){
             return (
                 <div className='register-section'>
@@ -60,25 +67,29 @@ class App extends React.Component {
                 </div>
             )
         }
+        const { currentApp } = this.props
         return (
             <>
-                <Header/>
-                <main>
-                    <Sidebar />
-                    <Chat />
-                </main>
+                <Header />
+                {
+                    currentApp === consts.CHAT &&
+                    <Chat />  
+                }
+                {
+                    currentApp === consts.PROFILE &&
+                    <Profile />  
+                }
             </>
         )
     }
 }
 
-const mapStateToProps = () => ({})
-
-const mapDispatchToProps = dispatch => ({
-    updateProfile: data => actions.updateProfile(data, dispatch),
+const mapStateToProps = ({currentApp}) => ({
+    currentApp
 })
 
-export default connect(
-    mapStateToProps,
-    mapDispatchToProps
-)(App)
+const mapDispatchToProps = dispatch => ({
+    updateProfile: data => actions.updateProfile(data, dispatch),  
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(App)

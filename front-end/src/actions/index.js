@@ -1,3 +1,8 @@
+export const consts = {
+    CHAT : 'USE_CHAT',
+    PROFILE : 'USE_PROFILE'
+}
+
 export default {
     loadChannels:(channels=[],dispatch)=>{
         dispatch({ type:'CHANNELS_UPDATE' , channels })
@@ -19,5 +24,22 @@ export default {
     },
     loadCurrentChat:(chat=[],dispatch)=>{//array of messages
         dispatch({ type:'UPDATE_CHAT' , chat })
-    }
+    },
+    displayChannelsModal:(dispatch)=>{
+        dispatch({ type:'DISPLAY_CHANNELS' })
+    },
+    displayConversationsModal:(dispatch)=>{
+        dispatch({ type:'DISPLAY_CONVERSATIONS' })
+    },
+    closeModal:(dispatch)=>{
+        dispatch({ type:'CLOSE_MODAL' })
+    },
+    selectApp : ( app , dispatch ) => {
+        console.log(consts)
+        if ( Object.values(consts).indexOf(app) > -1 ) {
+            dispatch( { type: app } )
+        } else {
+            throw new Error( `App ${ app } not allowed` )
+        }
+    },
 }

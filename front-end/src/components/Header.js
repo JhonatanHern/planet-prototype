@@ -1,7 +1,15 @@
-import React, { Component } from "react";
-import "../css/header.css";
-export default class Header extends Component {
-    render() {
+import React from "react"
+import { connect } from 'react-redux'
+import actions , { consts } from '../actions'
+
+import "../css/header.css"
+
+class Header extends React.Component {
+    menuClick = e => {
+        e.preventDefault()
+        this.props.selectApp(e.target.getAttribute('app'))
+    }
+    render(){
         return (
             <header>
                 <div>
@@ -13,17 +21,27 @@ export default class Header extends Component {
                 </div>
 
                 <div className="links">
-                    <a href="/" className="link">
-                        Community
+                    <a href="/" className="link" app={consts.CHAT} onClick={this.menuClick}>
+                        Chat
                     </a>
                     <a href="/" className="link">
                         Exchange
                     </a>
-                    <a href="/" className="link">
+                    <a href="/" className="link" app={consts.PROFILE} onClick={this.menuClick}>
                         User
                     </a>
                 </div>
             </header>
-        );
+        )
     }
 }
+const mapStateToProps = () => ({})
+
+const mapDispatchToProps = dispatch => ({
+    selectApp : app => actions.selectApp( app, dispatch )
+})
+
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(Header)
