@@ -39,17 +39,18 @@ class App extends Component {
             params: { username },
             callback: (result) =>{
                 if(result.Ok){
+                    this.props.updateProfile({ username })
                     this.setState({logged:true})
-                    hc({
-                        functionName: 'check_register',
-                        callback: data=>{
-                            if (data && data.Ok && data.Ok.registered) {
-                                let me = JSON.parse(data.Ok.me.App[1])
-                                this.props.updateProfile(me)
-                                this.setState({logged:true})
-                            }
-                        }
-                    })
+                    // hc({
+                    //     functionName: 'check_register',
+                    //     callback: data=>{
+                    //         if (data && data.Ok && data.Ok.registered) {
+                    //             let me = JSON.parse(data.Ok.me.App[1])
+                    //             this.props.updateProfile(me)
+                    //             this.setState({logged:true})
+                    //         }
+                    //     }
+                    // })
                 }else{
                     alert('error')
                     console.log(result)

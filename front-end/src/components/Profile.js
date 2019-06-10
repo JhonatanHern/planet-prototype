@@ -21,12 +21,10 @@ class Profile extends Component {
     state = {
         confidence: 60,
         tags: [
-            'some',
-            'none',
-            'algo',
-            'nada',
-            'dime',
-            'dame',
+            'programming',
+            'design',
+            'holochain',
+            'community',
         ]
     }
     addTag = e => {
@@ -60,7 +58,7 @@ class Profile extends Component {
                             <span onClick={this.addTag}>+ Add tag</span>
                         </section>
                         <div className='description'>
-                            <textarea value={lorem} onChange={e=>{}}></textarea>
+                            <textarea value={lorem} onChange={e=>{}} />
                         </div>
                     </section>
                 </section>
