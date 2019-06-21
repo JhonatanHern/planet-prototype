@@ -9,7 +9,7 @@ const lorem = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do e
 const Trust = ({confidence}) => (
     <div className='trust'>
         <div>
-            Trust level: {confidence}%
+            Reputation level: {confidence}%
         </div>
         <div className='confidence'>
             <div className='inner-progress' style={{width:confidence + '%'}}></div>

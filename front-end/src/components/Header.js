@@ -1,6 +1,5 @@
 import React from "react"
-import { connect } from 'react-redux'
-import actions , { consts } from '../actions'
+    import { Link } from 'react-router-dom'
 
 import "../css/header.css"
 
@@ -21,27 +20,19 @@ class Header extends React.Component {
                 </div>
 
                 <div className="links">
-                    <a href="/" className="link" app={consts.CHAT} onClick={this.menuClick}>
+                    <Link to='/chat' className='link'>
                         Chat
-                    </a>
-                    <a href="/" className="link">
-                        Exchange
-                    </a>
-                    <a href="/" className="link" app={consts.PROFILE} onClick={this.menuClick}>
+                    </Link>
+                    <Link to='/communities/search' className='link'>
+                        Communities
+                    </Link>
+                    <Link to="/profile" className="link">
                         User
-                    </a>
+                    </Link>
                 </div>
             </header>
         )
     }
 }
-const mapStateToProps = () => ({})
 
-const mapDispatchToProps = dispatch => ({
-    selectApp : app => actions.selectApp( app, dispatch )
-})
-
-export default connect(
-    mapStateToProps,
-    mapDispatchToProps
-)(Header)
+export default Header
