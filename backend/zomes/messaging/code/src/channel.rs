@@ -5,12 +5,21 @@ use hdk::{
     DNA_ADDRESS,
 };
 use hdk::holochain_core_types::{
-    cas::content::Address,
+    // cas::content::Address,
     entry::Entry,
     dna::entry_types::Sharing,
     error::HolochainError,
-    json::JsonString,
+    // json::JsonString,
     validation::EntryValidationData
+};
+
+use hdk::holochain_persistence_api::{
+    cas::content::Address,
+};
+
+use hdk::holochain_json_api::{
+    error::JsonError,
+    json::JsonString,
 };
 
 use crate::global_base;

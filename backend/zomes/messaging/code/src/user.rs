@@ -5,13 +5,24 @@ use hdk::{
     error::ZomeApiError,
 };
 use hdk::holochain_core_types::{
-    cas::content::Address,
+    // cas::content::Address,
     entry::Entry,
     dna::entry_types::Sharing,
     error::HolochainError,
-    json::JsonString,
+    // json::JsonString,
+    link::LinkMatch,
     validation::EntryValidationData
 };
+
+use hdk::holochain_json_api::{
+    error::JsonError,
+    json::JsonString,
+};
+
+use hdk::holochain_persistence_api::{
+    cas::content::Address,
+};
+
 use serde_json::json;
 
 // see https://developer.holochain.org/api/0.0.15-alpha1/hdk/ for info on using the hdk library
@@ -44,7 +55,7 @@ pub fn handle_create_user( username : String ) -> ZomeApiResult<Address> {
 }
 
 fn check_register() -> bool {
-    match hdk::get_links(&hdk::AGENT_ADDRESS,  Some("personal_link".to_string()),Some("".to_string())) {
+    match hdk::get_links(&hdk::AGENT_ADDRESS, LinkMatch::Exactly("personal_link"), LinkMatch::Any) {
         Ok(result_vec) => result_vec.addresses().len() != 0,
         Err(error) => {
             false
@@ -55,7 +66,7 @@ fn check_register() -> bool {
 pub fn handle_check_register() ->  ZomeApiResult<serde_json::Value>{
     Ok(
         if check_register() {
-            let addr = &hdk::get_links(&hdk::AGENT_ADDRESS, Some("personal_link".to_string()),Some("".to_string())).unwrap().addresses()[0];
+            let addr = &hdk::get_links(&hdk::AGENT_ADDRESS, LinkMatch::Exactly("personal_link"), LinkMatch::Any).unwrap().addresses()[0];
             json!({
                 "registered" : true,
                 "me" : &hdk::get_entry(&addr.to_owned()).unwrap().unwrap()

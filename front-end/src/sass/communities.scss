@@ -107,6 +107,7 @@ $main-colour : #2c61af;
     }
     .communities-list{
         > div{
+            animation: 2s pulse;
             padding: .5em 1em;
             width: 80%;
             margin-left: 10%;
@@ -118,5 +119,13 @@ $main-colour : #2c61af;
                 padding-left: 2em;
             }
         }
+    }
+}
+@keyframes pulse{
+    from{
+        opacity: 0;
+    }
+    to{
+        opacity: 1;
     }
 }

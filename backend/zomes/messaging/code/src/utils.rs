@@ -2,15 +2,21 @@ use core::convert::TryFrom;
 use hdk::{
     self,
     holochain_core_types::{
-    	hash::HashString,
+    	// hash::HashString,
     	entry::{AppEntryValue, Entry},
     },
     error::{ZomeApiResult, ZomeApiError},
 };
+use hdk::holochain_core_types::{
+    link::LinkMatch,
+};
+use hdk::holochain_persistence_api::{
+    cas::content::Address,
+};
 
 #[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct GetLinksLoadElement<T> {
-	pub address: HashString,
+	pub address: Address,
 	pub entry: T
 }
 
@@ -19,10 +25,10 @@ pub type GetLinksLoadResult<T> = Vec<GetLinksLoadElement<T>>;
 
 
 pub fn get_links_and_load(
-    base: &HashString,
+    base: &Address,
     tag: String
 ) -> ZomeApiResult<GetLinksLoadResult<Entry>>  {
-	let get_links_result = hdk::get_links(base, Some(tag),Some("".to_string()))?;
+	let get_links_result = hdk::get_links(base, LinkMatch::Exactly(&tag), LinkMatch::Any)?;
 
 	Ok(get_links_result.addresses()
 	.iter()
@@ -43,7 +49,7 @@ pub fn get_links_and_load_type<
 	// S: Into<String>,
 	R: TryFrom<AppEntryValue>
 >(
-    base: &HashString,
+    base: &Address,
     tag: String
 ) -> ZomeApiResult<GetLinksLoadResult<R>> {
 	let link_load_results = get_links_and_load(base, tag)?;
@@ -73,7 +79,7 @@ pub fn get_links_and_load_type<
 	.collect())
 }
 
-pub fn link_entries_bidir(a: &HashString, b: &HashString, tag_a_b: &str, tag_b_a: &str) -> ZomeApiResult<()> {
+pub fn link_entries_bidir(a: &Address, b: &Address, tag_a_b: &str, tag_b_a: &str) -> ZomeApiResult<()> {
     hdk::link_entries(a, b, tag_a_b, "")?;
     hdk::link_entries(b, a, tag_b_a, "")?;
     Ok(())
