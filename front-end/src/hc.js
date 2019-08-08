@@ -1,6 +1,6 @@
 import { connect } from '@holochain/hc-web-client'
 
-const is_the_connection_a_test = true
+const is_the_connection_a_test = false
 
 const is_dev_mode = !process.env.NODE_ENV || process.env.NODE_ENV === 'development'
 
@@ -8,7 +8,7 @@ export default ({ functionName , params = {} , callback = _ => {} }) => {
     let promise
     if (is_dev_mode) {
         // dev code
-        promise = connect("ws://localhost:8888")
+        promise = connect("ws://localhost:8080")
     } else {
         // production code
         promise = connect()
