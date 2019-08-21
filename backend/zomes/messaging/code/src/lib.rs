@@ -29,6 +29,7 @@ use hdk::holochain_json_api::{
 mod user;
 mod message;
 mod channel;
+mod discussion;
 mod group;
 mod conversation;
 mod global_base;
@@ -45,6 +46,7 @@ define_zome! {
         channel::definition(),
         message::definition(),
         conversation::definition(),
+        discussion::definition(),
         group::definition()
     ]
     init: || {
@@ -132,6 +134,21 @@ define_zome! {
             inputs: | buddy: Address |,
             outputs : | result : ZomeApiResult<Address> |,
             handler : conversation::handle_create_conversation
+        }
+        create_discussion:{
+            inputs: | entry : discussion::Discussion, group_addr: Address |,
+            outputs:| result: ZomeApiResult<Address> |,
+            handler: discussion::handle_create_discussion
+        }
+        get_group_discussions:{
+            inputs: | group_addr:Address |,
+            outputs:| result: ZomeApiResult<utils::GetLinksLoadResult<discussion::Discussion>> |,
+            handler: discussion::handle_get_group_discussions
+        }
+        get_my_discussions:{
+            inputs: | |,
+            outputs:| result: ZomeApiResult<utils::GetLinksLoadResult<discussion::Discussion>> |,
+            handler: discussion::handle_get_my_discussions
         }
         reee: {
             inputs: | s : String |,
