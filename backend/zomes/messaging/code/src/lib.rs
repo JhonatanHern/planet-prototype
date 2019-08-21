@@ -29,6 +29,7 @@ use hdk::holochain_json_api::{
 mod user;
 mod message;
 mod channel;
+mod group;
 mod conversation;
 mod global_base;
 mod utils;
@@ -43,7 +44,8 @@ define_zome! {
         user::definition(),
         channel::definition(),
         message::definition(),
-        conversation::definition()
+        conversation::definition(),
+        group::definition()
     ]
     init: || {
         Ok(())
@@ -81,6 +83,11 @@ define_zome! {
             outputs: |result: ZomeApiResult<Address>|,
             handler: channel::handle_create_channel
         }
+        create_group: {
+            inputs: | entry : group::Group |,
+            outputs: |result: ZomeApiResult<Address>|,
+            handler: group::handle_create_group
+        }
         create_user: {
             inputs: | username : String |,
             outputs: |result: ZomeApiResult<Address>|,
@@ -101,10 +108,20 @@ define_zome! {
             outputs : | result : ZomeApiResult<utils::GetLinksLoadResult<channel::Channel>> |,
             handler : channel::handle_get_all_channels
         }
+        get_all_groups:{
+            inputs: | |,
+            outputs : | result : ZomeApiResult<utils::GetLinksLoadResult<group::Group>> |,
+            handler : group::handle_get_all_groups
+        }
         get_my_channels:{
             inputs: | |,
             outputs : | result : ZomeApiResult<utils::GetLinksLoadResult<channel::Channel>> |,
             handler : channel::handle_get_my_channels
+        }
+        get_my_groups:{
+            inputs: | |,
+            outputs : | result : ZomeApiResult<utils::GetLinksLoadResult<group::Group>> |,
+            handler : group::handle_get_my_groups
         }
         get_my_conversations:{
             inputs: | |,
