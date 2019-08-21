@@ -1,17 +1,12 @@
-#![feature(try_from)]
 use hdk::{
     entry_definition::ValidatingEntryType,
     error::ZomeApiResult,
     error::ZomeApiError,
 };
 use hdk::holochain_core_types::{
-    // cas::content::Address,
     entry::Entry,
     dna::entry_types::Sharing,
-    error::HolochainError,
-    // json::JsonString,
     link::LinkMatch,
-    validation::EntryValidationData
 };
 
 use hdk::holochain_json_api::{
@@ -24,9 +19,6 @@ use hdk::holochain_persistence_api::{
 };
 
 use serde_json::json;
-
-// see https://developer.holochain.org/api/0.0.15-alpha1/hdk/ for info on using the hdk library
-
 
 #[derive(Serialize, Deserialize, Debug, DefaultJson,Clone)]
 pub struct User {
@@ -57,7 +49,7 @@ pub fn handle_create_user( username : String ) -> ZomeApiResult<Address> {
 fn check_register() -> bool {
     match hdk::get_links(&hdk::AGENT_ADDRESS, LinkMatch::Exactly("personal_link"), LinkMatch::Any) {
         Ok(result_vec) => result_vec.addresses().len() != 0,
-        Err(error) => {
+        Err(_error) => {
             false
         }
     }

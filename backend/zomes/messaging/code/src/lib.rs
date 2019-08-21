@@ -1,4 +1,3 @@
-#![feature(try_from)]
 #[macro_use]
 extern crate hdk;
 extern crate serde;
@@ -7,18 +6,14 @@ extern crate serde_derive;
 extern crate serde_json;
 #[macro_use]
 
+
 extern crate holochain_json_derive;
 
 use hdk::{
-    entry_definition::ValidatingEntryType,
     error::ZomeApiResult,
 };
 use hdk::holochain_core_types::{
-    // cas::content::Address,
-    entry::Entry,
-    dna::entry_types::Sharing,
-    error::HolochainError,
-    // json::JsonString,
+    agent::AgentId,
     validation::EntryValidationData
 };
 
@@ -31,8 +26,6 @@ use hdk::holochain_json_api::{
     json::JsonString,
 };
 
-// see https://developer.holochain.org/api/0.0.15-alpha1/hdk/ for info on using the hdk library
-
 mod user;
 mod message;
 mod channel;
@@ -40,16 +33,33 @@ mod conversation;
 mod global_base;
 mod utils;
 
+fn ree(s:String) -> ZomeApiResult<String>{
+    Ok(s)
+}
+
 define_zome! {
     entries: [
         global_base::definition(),
         user::definition(),
         channel::definition(),
-        message::definition()
+        message::definition(),
+        conversation::definition()
     ]
-    genesis: || {
+    init: || {
         Ok(())
     }
+    validate_agent: |validation_data : EntryValidationData::<AgentId>| {{
+        if let EntryValidationData::Create{entry, ..} = validation_data {
+            let agent = entry as AgentId;
+            if agent.nick == "reject_agent::app" {
+                Err("This agent will always be rejected".into())
+            } else {
+                Ok(())
+            }
+        } else {
+            Err("Cannot update or delete an agent at this time".into())
+        }
+    }}
     functions: [
         send_message: {
             inputs: | entry: message::Message , channel_address : Address|,
@@ -114,6 +124,8 @@ define_zome! {
     ]
     traits: {
         hc_public [
+            reee,
+
             send_message,
             send_private_message,
             get_messages_from_channel,
@@ -127,13 +139,7 @@ define_zome! {
             create_user,
 
             get_my_conversations,
-            create_conversation,
-
-            reee
+            create_conversation
         ]
     }
-}
-
-fn ree(s:String) -> ZomeApiResult<String>{
-    Ok(s)
 }

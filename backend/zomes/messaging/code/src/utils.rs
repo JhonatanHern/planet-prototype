@@ -2,7 +2,6 @@ use core::convert::TryFrom;
 use hdk::{
     self,
     holochain_core_types::{
-    	// hash::HashString,
     	entry::{AppEntryValue, Entry},
     },
     error::{ZomeApiResult, ZomeApiError},
@@ -78,9 +77,10 @@ pub fn get_links_and_load_type<
 	.filter_map(Result::ok)
 	.collect())
 }
-
+/*
 pub fn link_entries_bidir(a: &Address, b: &Address, tag_a_b: &str, tag_b_a: &str) -> ZomeApiResult<()> {
     hdk::link_entries(a, b, tag_a_b, "")?;
     hdk::link_entries(b, a, tag_b_a, "")?;
     Ok(())
 }
+*/

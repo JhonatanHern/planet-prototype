@@ -1,15 +1,9 @@
-#![feature(try_from)]
 use hdk::{
     entry_definition::ValidatingEntryType,
-    error::ZomeApiResult,
 };
 use hdk::holochain_core_types::{
-    // cas::content::Address,
     entry::Entry,
     dna::entry_types::Sharing,
-    error::HolochainError,
-    // json::JsonString,
-    validation::EntryValidationData
 };
 
 use hdk::holochain_persistence_api::{
@@ -20,9 +14,6 @@ use hdk::holochain_json_api::{
     error::JsonError,
     json::JsonString,
 };
-
-// see https://developer.holochain.org/api/0.0.15-alpha1/hdk/ for info on using the hdk library
-
 
 #[derive(Serialize, Deserialize, Debug, DefaultJson,Clone)]
 pub struct Base {
@@ -38,10 +29,7 @@ pub fn get_base_hash()  -> Address{
     let entry = Entry::App("global_base".into(),get_base_entry().into());
     hdk::commit_entry(&entry).unwrap()
 }
-pub fn commit_base() {
-    let entry = Entry::App("global_base".into(),get_base_entry().into());
-    let address = hdk::commit_entry(&entry);
-}
+
 pub fn definition() -> ValidatingEntryType {
     entry!(
         name: "global_base",

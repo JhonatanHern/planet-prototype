@@ -1,15 +1,10 @@
-#![feature(try_from)]
 use hdk::{
     entry_definition::ValidatingEntryType,
     error::ZomeApiResult,
 };
 use hdk::holochain_core_types::{
-    // cas::content::Address,
     entry::Entry,
     dna::entry_types::Sharing,
-    error::HolochainError,
-    // json::JsonString,
-    validation::EntryValidationData
 };
 
 use hdk::holochain_json_api::{
@@ -20,8 +15,6 @@ use hdk::holochain_json_api::{
 use hdk::holochain_persistence_api::{
     cas::content::Address,
 };
-
-// see https://developer.holochain.org/api/0.0.15-alpha1/hdk/ for info on using the hdk library
 
 use crate::utils;
 

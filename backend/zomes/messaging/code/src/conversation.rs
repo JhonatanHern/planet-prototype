@@ -1,16 +1,10 @@
-#![feature(try_from)]
 use hdk::{
     entry_definition::ValidatingEntryType,
     error::ZomeApiResult,
-    DNA_ADDRESS,
 };
 use hdk::holochain_core_types::{
-    // cas::content::Address,
     entry::Entry,
     dna::entry_types::Sharing,
-    error::HolochainError,
-    // json::JsonString,
-    validation::EntryValidationData,
 };
 
 use hdk::holochain_persistence_api::{
@@ -23,7 +17,7 @@ use hdk::holochain_json_api::{
     json::RawString,
 };
 
-use crate::global_base;
+// use crate::global_base;
 use crate::utils;
 
 
@@ -34,7 +28,7 @@ pub struct Conversation {
 }
 
 pub fn handle_create_conversation( buddy : Address ) -> ZomeApiResult<Address> {
-    let entry = Conversation{
+    let _entry = Conversation{
         p1 : buddy.clone(),
         p2 : Address::from(hdk::AGENT_ADDRESS.to_string())
     };

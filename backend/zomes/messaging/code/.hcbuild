@@ -6,9 +6,9 @@
         "build",
         "--release",
         "--target=wasm32-unknown-unknown",
-        "--target-dir=target"
+        "--target-dir=/home/hackme/nix-holochain/messaging/target"
       ]
     }
   ],
-  "artifact": "target/wasm32-unknown-unknown/release/messaging.wasm"
+  "artifact": "/home/hackme/nix-holochain/messaging/target/wasm32-unknown-unknown/release/messaging.wasm"
 }
