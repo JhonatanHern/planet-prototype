@@ -30,6 +30,7 @@ mod user;
 mod message;
 mod channel;
 mod discussion;
+mod comment;
 mod group;
 mod conversation;
 mod global_base;
@@ -47,6 +48,7 @@ define_zome! {
         message::definition(),
         conversation::definition(),
         discussion::definition(),
+        comment::definition(),
         group::definition()
     ]
     init: || {
@@ -140,6 +142,11 @@ define_zome! {
             outputs:| result: ZomeApiResult<Address> |,
             handler: discussion::handle_create_discussion
         }
+        create_comment:{
+            inputs: | text : String, discussion_addr: Address |,
+            outputs:| result: ZomeApiResult<Address> |,
+            handler: comment::handle_create_comment
+        }
         get_group_discussions:{
             inputs: | group_addr:Address |,
             outputs:| result: ZomeApiResult<utils::GetLinksLoadResult<discussion::Discussion>> |,
@@ -149,6 +156,16 @@ define_zome! {
             inputs: | |,
             outputs:| result: ZomeApiResult<utils::GetLinksLoadResult<discussion::Discussion>> |,
             handler: discussion::handle_get_my_discussions
+        }
+        get_discussion_comments:{
+            inputs: | discussion_addr: Address |,
+            outputs: | result: ZomeApiResult<utils::GetLinksLoadResult<comment::Comment>> |,
+            handler: comment::handle_get_discussion_comments
+        }
+        get_my_comments:{
+            inputs: | |,
+            outputs: | result: ZomeApiResult<utils::GetLinksLoadResult<comment::Comment>> |,
+            handler: comment::handle_get_my_comments
         }
         reee: {
             inputs: | s : String |,
@@ -167,6 +184,18 @@ define_zome! {
             create_channel,
             get_all_channels,
             get_my_channels,
+
+            create_discussion,
+            get_group_discussions,
+            get_my_discussions,
+
+            create_comment,
+            get_discussion_comments,
+            get_my_comments,
+
+            create_group,
+            get_all_groups,
+            get_my_groups,
 
             check_register,
             get_all_users,
