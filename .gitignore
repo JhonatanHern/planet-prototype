@@ -12,7 +12,7 @@ front-end/npm-debug.log*
 front-end/yarn-debug.log*
 front-end/yarn-error.log*
 
-backend/dist/
-backend/node_modules/
-backend/target/
-backend/.hc
+dist/
+node_modules/
+target/
+.hc

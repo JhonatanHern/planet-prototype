@@ -1,0 +1,52 @@
+bridges = []
+persistence_dir = ''
+ui_bundles = []
+ui_interfaces = []
+
+[[agents]]
+id = 'hc-run-agent'
+keystore_file = 'key2.key'
+name = 'testAgent'
+public_address = 'HcScJS6wEpxR4pvhwfdba3f8TiVwfwyb3z7hvqDIrZncwccozG57wETgc34mwkr'
+
+[[dnas]]
+file = './dist/backend_new.dna.json'
+hash = 'QmNMDfNAYvr8ioty1Rg1Y4MnmwMAkgeC7KEQu624M8UEhM'
+id = 'hc-run-dna'
+
+[[instances]]
+agent = 'hc-run-agent'
+dna = 'hc-run-dna'
+id = 'holo-chat'
+
+[instances.storage]
+type = 'memory'
+
+[[interfaces]]
+admin = true
+id = 'websocket-interface'
+
+[[interfaces.instances]]
+id = 'holo-chat'
+
+[interfaces.driver]
+port = 8081
+type = 'websocket'
+
+[logger]
+state_dump = true
+type = 'debug'
+
+[logger.rules]
+rules = []
+
+[network]
+sim2h_url = 'ws://0.0.0.0:9000'
+type = 'sim2h'
+
+[passphrase_service]
+type = 'cmd'
+
+[signals]
+consistency = false
+trace = false
